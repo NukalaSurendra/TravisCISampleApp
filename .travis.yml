@@ -35,7 +35,7 @@ script:
 - sfdx force:apex:test:run -u ciorg --wait 10
 - sfdx force:org:delete -u ciorg -p
 #Authorize target deployment org
-- sfdx force:auth:jwt:grant --instanceurl https://test.salesforce.com  --clientid $CONSUMERKEY --jwtkeyfile assets/server.key --username $USERNAME --setalias UAT
+- sfdx force:auth:jwt:grant --instanceurl https://login.salesforce.com  --clientid $CONSUMERKEY --jwtkeyfile assets/server.key --username $USERNAME --setalias UAT
   #Deploy to target deployment org and run unit tests
 - sfdx force:mdapi:deploy --wait 10 --deploydir $DEPLOYDIR --targetusername UAT --testlevel $TESTLEVEL
   #Example shows how to run a check-only deploy.
