@@ -19,6 +19,14 @@ before_install:
 - sfdx plugins --core
 - sfdx force:auth:jwt:grant --clientid $CONSUMERKEY --jwtkeyfile assets/server.key
   --username $USERNAME --setdefaultdevhubusername -a HubOrg
+
+#Assign variables
+- export DEPLOYDIR=src
+- export TESTLEVEL=RunLocalTests
+- sfdx --version
+- sfdx plugins --core
+
+
 script:
 - sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg --wait
   2
@@ -26,3 +34,9 @@ script:
 - sfdx force:source:push -u ciorg
 - sfdx force:apex:test:run -u ciorg --wait 10
 - sfdx force:org:delete -u ciorg -p
+#Authorize target deployment org
+- sfdx force:auth:jwt:grant --instanceurl https://test.salesforce.com  --clientid $CONSUMERKEY --jwtkeyfile assets/server.key --username $USERNAME --setalias UAT
+  #Deploy to target deployment org and run unit tests
+- sfdx force:mdapi:deploy --wait 10 --deploydir $DEPLOYDIR --targetusername UAT --testlevel $TESTLEVEL
+  #Example shows how to run a check-only deploy.
+  #- sfdx force:mdapi:deploy --checkonly --wait 10 --deploydir $DEPLOYDIR --targetusername UAT --testlevel $TESTLEVEL
