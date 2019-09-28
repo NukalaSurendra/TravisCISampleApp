@@ -21,7 +21,7 @@ before_install:
   --username $USERNAME --setdefaultdevhubusername -a HubOrg
 
 #Assign variables
-- export DEPLOYDIR=src
+- export DEPLOYDIR=force-app/main/default/classes
 - export TESTLEVEL=RunLocalTests
 - sfdx --version
 - sfdx plugins --core
